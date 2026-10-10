@@ -1,0 +1,26 @@
+/* Blocker Board のパネル(§9.4)。色は Obsidian のテーマの変数だけを使う。 */
+.bb-panel { font-size: var(--font-ui-small); }
+.bb-head { margin-bottom: var(--size-4-2); }
+.bb-head button { margin-bottom: var(--size-4-1); }
+.bb-totals { font-weight: var(--font-semibold); }
+.bb-time, .bb-sub, .bb-subhead { color: var(--text-muted); }
+.bb-group > summary { font-weight: var(--font-semibold); cursor: pointer; padding: var(--size-4-1) 0; }
+.bb-spec { margin-left: var(--size-4-3); }
+.bb-spec > summary { cursor: pointer; padding: 2px 0; }
+.bb-spec > :not(summary) { margin-left: var(--size-4-4); }
+.bb-name { margin-right: var(--size-4-1); }
+.bb-meta { color: var(--text-muted); margin-left: var(--size-4-1); }
+.bb-tag {
+	font-size: var(--font-ui-smaller);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-s);
+	padding: 0 4px;
+}
+.bb-row { padding: 2px 0; overflow-wrap: anywhere; }
+.bb-link { cursor: pointer; }
+.bb-link:hover, .bb-link:focus-visible { color: var(--text-accent); }
+.bb-note { color: var(--text-muted); margin: var(--size-4-1) 0 var(--size-4-2) var(--size-4-3); overflow-wrap: anywhere; }
+.bb-warn { color: var(--text-error); }
+.bb-subhead { margin: var(--size-4-1) 0 0 var(--size-4-3); }
+.bb-plain { margin-left: var(--size-4-4); }
+.bb-fail { margin-left: var(--size-4-3); color: var(--text-error); }
