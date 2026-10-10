@@ -15,6 +15,12 @@ describe("対象(FR-1)", () => {
 		expect(isTarget("specsX/a.md", s)).toBe(false);
 		expect(isTarget("specs/a.canvas", s)).toBe(false);
 	});
+
+	it("既定は未設定(specFolders が空)。vault の直下とは読まず、1本も対象にしない", () => {
+		expect(DEFAULTS.specFolders).toEqual([]);
+		expect(isTarget("a.md", DEFAULTS)).toBe(false);
+		expect(isTarget("specs/a.md", DEFAULTS)).toBe(false);
+	});
 });
 
 describe("実装状態(FR-8)", () => {
@@ -48,6 +54,20 @@ describe("実装状態(FR-8)", () => {
 		const m = { ...s, manualMap: { "a/Tool_plugin.md": "other/Special.md", "a/Tool_x.md": "" } };
 		expect(decideState("a/Tool_plugin.md", m, lookup)).toEqual({ group: "other", label: "partial", manualPath: "other/Special.md" });
 		expect(decideState("a/Tool_x.md", m, lookup)).toEqual({ group: "unknown", label: "", manualPath: null });
+	});
+
+	it("既定は未設定(manualFolder が空)。製品名では探さず(vault の直下も見ない)、manualMap だけを見る", () => {
+		const asked: string[] = [];
+		const spy = (p: string): ManualInfo => {
+			asked.push(p);
+			return { kind: "loaded", value: "DONE" };
+		};
+		const u = { ...s, manualFolder: DEFAULTS.manualFolder, manualMap: { "a/Mapped_x.md": "other/Special.md" } };
+		expect(u.manualFolder).toBe("");
+		expect(manualPathOf("a/Tool_x.md", u)).toBeNull();
+		expect(decideState("a/Tool_x.md", u, spy)).toEqual({ group: "unknown", label: "", manualPath: null });
+		expect(decideState("a/Mapped_x.md", u, spy)).toEqual({ group: "implemented", label: "DONE", manualPath: "other/Special.md" });
+		expect(asked).toEqual(["other/Special.md"]);
 	});
 });
 
@@ -91,9 +111,10 @@ describe("設定の読み込み(§9.2)", () => {
 
 	it("無ければ既定値。欠けた項目は既定値で埋め、パスは正規化する", () => {
 		expect(normalizeSettings(null, norm)).toEqual({ settings: DEFAULTS, problem: false });
-		const { settings, problem } = normalizeSettings({ specFolders: ["a\\b/", " "], manualMap: { "x\\y.md": "", "p.md": "q\\r.md" } }, norm);
+		const { settings, problem } = normalizeSettings({ specFolders: ["a\\b/", " "], manualFolder: "m\\n/", manualMap: { "x\\y.md": "", "p.md": "q\\r.md" } }, norm);
 		expect(problem).toBe(false);
 		expect(settings.specFolders).toEqual(["a/b"]);
+		expect(settings.manualFolder).toBe("m/n");             // 保存してある値は、既定が空でもそのまま
 		expect(settings.manualMap).toEqual({ "x/y.md": "", "p.md": "q/r.md" });
 		expect(settings.unconfirmedMarker).toBe(DEFAULTS.unconfirmedMarker);
 	});

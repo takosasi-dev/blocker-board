@@ -9,6 +9,8 @@ import type { Group } from "./parse/state";
 import type BlockerBoardPlugin from "./main";
 
 export const VIEW_TYPE = "blocker-board-panel";
+/** specFolders が空(未設定)のときに、パネルと再走査のコマンドで出す文 */
+export const UNSET_TEXT = "仕様書のフォルダが未設定です。設定 → Blocker Board で指定してください";
 
 const GROUP_TITLE: Record<Group, string> = { unknown: "状態不明", other: "その他の状態", implemented: "実装済み" };
 const SOURCE_TEXT: Record<PhaseSource, string> = {
@@ -57,6 +59,7 @@ export class BoardView extends ItemView {
 		const t = board.totals;
 		head.createDiv({ cls: "bb-totals", text: `仕様書 ${t.specs} 本 / §8 の欄 ${t.blanks} / 小節 ${t.slots} / §13 ${mark} ${t.unconfirmed}` });
 		head.createDiv({ cls: "bb-time", text: p.lastScan ? `最終走査 ${timeText(p.lastScan.at)}(所要 ${p.lastScan.ms} ms)` : "まだ走査していない" });
+		if (!p.settings.specFolders.length) root.createDiv({ cls: "bb-warn", text: UNSET_TEXT });
 		for (const f of p.missing) root.createDiv({ cls: "bb-warn", text: `フォルダが見つからない: ${f}` });
 
 		for (const g of board.groups) {

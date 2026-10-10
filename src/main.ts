@@ -8,7 +8,7 @@ import { decideState, UNLOADED_LABEL, type SpecState } from "./parse/state";
 import { normalizeSettings, type Settings } from "./settings";
 import { BlockerBoardSettingTab } from "./settings-tab";
 import { fileAt, listTargets, lookupManual, missingFolders, readText } from "./source";
-import { BoardView, VIEW_TYPE } from "./view";
+import { BoardView, UNSET_TEXT, VIEW_TYPE } from "./view";
 
 export default class BlockerBoardPlugin extends Plugin {
 	settings!: Settings;
@@ -26,7 +26,10 @@ export default class BlockerBoardPlugin extends Plugin {
 		await this.loadSettings();
 		this.registerView(VIEW_TYPE, (leaf) => new BoardView(leaf, this));
 		this.addCommand({ id: "open-board", name: "実物待ちボードを開く", callback: () => void this.openBoard() });
-		this.addCommand({ id: "rescan", name: "仕様書を走査し直す", callback: () => void this.rescan() });
+		this.addCommand({ id: "rescan", name: "仕様書を走査し直す", callback: () => {
+			if (!this.settings.specFolders.length) new Notice(UNSET_TEXT);   // 起動時の走査では出さない
+			void this.rescan();
+		} });
 		this.addSettingTab(new BlockerBoardSettingTab(this.app, this));
 
 		this.registerEvent(this.app.metadataCache.on("changed", (file) => this.onChanged(file.path)));

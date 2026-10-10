@@ -19,13 +19,13 @@ export class BlockerBoardSettingTab extends PluginSettingTab {
 	getSettingDefinitions(): SettingDefinitionItem[] {
 		return [
 			{ type: "group", items: [
-				{ name: "仕様書のフォルダ", desc: "1行に1つ。vault からのパス。この下の md を読む", control: { type: "textarea", key: "specFolders", rows: 3 } },
+				{ name: "仕様書のフォルダ", desc: "1行に1つ。vault からのパス。この下の md を読む。未設定(空)だと1本も読まない。例: Specs や 仕様書", control: { type: "textarea", key: "specFolders", rows: 3 } },
 				{ name: "除くパス", desc: "1行に1つ。フォルダかファイル。Foo は Foo/ の下だけに効く", control: { type: "textarea", key: "excludePaths", rows: 4 } },
 				{ name: "言及として数えない欄の中身", desc: "1行に1つ。インラインコードの中でこの中身の {{…}} は数えない", control: { type: "textarea", key: "mentionTexts", rows: 2 } },
 				{ name: "§13 の印", desc: "この文字を含む §13 の行を出す", control: { type: "text", key: "unconfirmedMarker" } },
 			] },
 			{ type: "group", heading: "実装状態", items: [
-				{ name: "説明書のフォルダ", desc: "製品名.md をここで探す", control: { type: "text", key: "manualFolder" } },
+				{ name: "説明書のフォルダ", desc: "製品名.md をここで探す。未設定(空)だと探さず、下の対応表だけを見る。例: Manuals や 説明書", control: { type: "text", key: "manualFolder" } },
 				{ name: "説明書の対応表", desc: `1行に1つ「仕様書のパス ${MAP_SEP} 説明書のパス」。右が空なら説明書なし`, control: { type: "textarea", key: "manualMap", rows: 4 } },
 				{ name: "状態のプロパティ名", control: { type: "text", key: "statusKey" } },
 				{ name: "実装済みにする値", desc: "1行に1つ", control: { type: "textarea", key: "implementedStates", rows: 2 } },

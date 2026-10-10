@@ -64,7 +64,7 @@ Q-1 保存先のフォルダ(未確認)
 - フェーズは §12 の表のほか、§12 の箇条書き(`- Phase 2` の下の「着手条件: §8.1」の行)、§12 の文(「Phase 3 の開始前に §8.2 を確かめる。」)、§8 の小見出し(`### 8.1 動作環境(Phase 2 の開始条件)`)、§8 の前書き(「Phase 1 を開始してはならない」)からも読みます。
 - 実装状態は、仕様書のファイル名の最初の `_` より前を製品名とし(`SampleTool_見本_仕様書.md` なら `SampleTool`)、説明書のフォルダにある `SampleTool.md` のプロパティ `状態` で決めます。この項目は [Status Badge](https://github.com/takosasi-dev/status-badge) が印に出す物と同じです([SpecStatus](https://github.com/takosasi-dev/spec-status) の記録は読みません)。
 
-既定のフォルダ名・印の文字・プロパティ名は作者の vault の物です。設定の「仕様書のフォルダ」「§13 の印」「説明書のフォルダ」「状態のプロパティ名」「実装済みにする値」を、自分の vault に合わせて書き換えてください。節の番号(8・12・13)と「Phase」の語は固定で、変えられません。
+フォルダは既定では決まっていません(未設定)。入れたら、まず設定の「仕様書のフォルダ」を指定してください(下の「入れたら最初に設定する項目」)。印の文字・プロパティ名・実装済みにする値の既定は `未確認`・`状態`・`実装完了` です。自分の vault の書き方と違うときは、設定の「§13 の印」「状態のプロパティ名」「実装済みにする値」を書き換えてください。節の番号(8・12・13)と「Phase」の語は固定で、変えられません。
 
 ## 入れ方
 
@@ -78,6 +78,13 @@ Q-1 保存先のフォルダ(未確認)
 
 [Releases](https://github.com/takosasi-dev/blocker-board/releases) から `main.js`・`manifest.json`・`styles.css` を落とし、vault の `.obsidian/plugins/blocker-board/` に置いて、コミュニティプラグインの一覧で有効にします。
 
+### 入れたら最初に設定する項目
+
+設定 → Blocker Board で、次の 2 つを自分の vault に合わせて入れます。どちらも既定は空(未設定)です。
+
+- **仕様書のフォルダ**(必ず): 仕様書を置いているフォルダを、vault からのパスで 1 行に 1 つ(例: `Specs` や `仕様書`)。未設定のあいだは 1 本も読まず(vault 全体を読みに行くこともありません)、パネルに `仕様書のフォルダが未設定です。設定 → Blocker Board で指定してください` と出ます。
+- **説明書のフォルダ**(実装状態で組に分けるなら): 説明書ノートを置いているフォルダ(例: `Manuals` や `説明書`)。未設定のあいだは製品名での説明書探しをせず、「説明書の対応表」に書いた仕様書のほかは全部「状態不明」に出ます。
+
 ## 使い方
 
 ### コマンド
@@ -87,7 +94,7 @@ Q-1 保存先のフォルダ(未確認)
 | Blocker Board: 実物待ちボードを開く | 右サイドバーにパネル「実物待ちボード」を出す |
 | Blocker Board: 仕様書を走査し直す | 仕様書を全部読み直して、数え直す |
 
-既定のホットキーはありません。有効にすると、起動のたびに仕様書を全部読んで数えます。
+既定のホットキーはありません。「仕様書のフォルダ」を設定してあれば、起動のたびにその下の仕様書を全部読んで数えます。未設定のあいだは読まず、起動しただけでは知らせも出しません。
 
 ### 画面の見方
 
@@ -96,17 +103,18 @@ Q-1 保存先のフォルダ(未確認)
 - 仕様書の行: 名前・札(`状態` の値)・`欄 N・小節 N・未確認 N・最初に止まる Phase N`。開くと、小節の行、§13 の印を含む行、`§8 の外の {{…}}: N(実物待ちに数えない)`、`説明書を開く: <名前>` が並びます。
 - 小節の行のかっこの中は、フェーズを読んだ場所です(`§12 の表`・`§12 の箇条書き`・`§12 の文`・`§8 の小見出し`・`§8 全体`)。
 - 下の方(畳んである): `§8 はあるが欄が無い(N) / §8 が無い(N)` と `読めなかった仕様書(N)`
+- 「仕様書のフォルダ」が未設定のとき: パネルに `仕様書のフォルダが未設定です。設定 → Blocker Board で指定してください` と出ます。コマンド「仕様書を走査し直す」を使ったときも、同じ文を知らせます。
 - ほかに出る文: `フォルダが見つからない: <パス>`、`コードブロックが閉じていない(以降の §12・§13 は読めない)`、起動直後の札「未読込」(Obsidian の索引ができると決め直します)
 
 ## 設定
 
 | 項目 | 既定 | 内容 |
 |---|---|---|
-| 仕様書のフォルダ | `仕様書MDファイル` | 1行に1つ。vault からのパス。この下の md を読む |
+| 仕様書のフォルダ | 空(未設定) | 1行に1つ。vault からのパス。この下の md を読む。未設定(空)だと1本も読まない。例: Specs や 仕様書 |
 | 除くパス | 空 | 1行に1つ。フォルダかファイル。Foo は Foo/ の下だけに効く |
 | 言及として数えない欄の中身 | `...` と `…` | 1行に1つ。インラインコードの中でこの中身の {{…}} は数えない |
 | §13 の印 | `未確認` | この文字を含む §13 の行を出す |
-| 説明書のフォルダ | `説明書/Claude開発ツールについて` | 製品名.md をここで探す |
+| 説明書のフォルダ | 空(未設定) | 製品名.md をここで探す。未設定(空)だと探さず、下の対応表だけを見る。例: Manuals や 説明書 |
 | 説明書の対応表 | 空 | 1行に1つ「仕様書のパス => 説明書のパス」。右が空なら説明書なし |
 | 状態のプロパティ名 | `状態` | 説明書のプロパティのうち、状態として読む物の名前 |
 | 実装済みにする値 | `実装完了` | 1行に1つ。この値なら「実装済み」の組に入れる |
@@ -123,11 +131,11 @@ Q-1 保存先のフォルダ(未確認)
 - ネットワークに出ません。Node.js / Electron の機能を使いません(モバイルでも動く作りです)。
 - クリップボードは使いません。
 - 推定しません。フェーズが読めない小節は「読み取れず」、説明書が引けない仕様書は「状態不明」と出します。
-- `data.json` が読めないときは既定値で動き、`Blocker Board: 設定(data.json)が読めないので既定値で動きます。data.json は書き換えていません。` と知らせます(そのあと設定画面で値を変えると、保存し直します)。
+- `data.json` が読めないときは既定値で動き、`Blocker Board: 設定(data.json)が読めないので既定値で動きます。data.json は書き換えていません。` と知らせます(既定は「仕様書のフォルダ」が未設定なので、そのあいだは何も読みません。そのあと設定画面で値を変えると、保存し直します)。
 
 ## 動作確認の状況
 
-- 版 0.1.0。Windows の Obsidian 1.14.4 で動作を確認(パネルの表示、数が同じ規則で別に数えた数と合うこと、小節の行と未確認の行を押すと編集画面のその行に移ること)
+- 版 0.1.1。Windows の Obsidian 1.14.4 で動作を確認(パネルの表示、数が同じ規則で別に数えた数と合うこと、小節の行と未確認の行を押すと編集画面のその行に移ること、フォルダが未設定のときにパネルと「仕様書を走査し直す」の知らせに案内が出ること)
 - iPhone・Android の実機は未確認(モバイル表示のエミュレーションで読み込みと表示まで確認)
 - まだ確かめていない事: 閲覧モード(読み取りビュー)で開いたノートへの行の移動、仕様書を書き換えたあと押さずに数が変わること(Obsidian の画面では未確認)
 
@@ -165,6 +173,7 @@ MIT。[LICENSE](LICENSE) を見てください。
 - Per spec and subsection it shows the number of placeholders, the blocked phases with where they were read from (or 「読み取れず」 when they cannot be read; nothing is guessed), and the §13 rows that contain a marker (default 「未確認」). Clicking a row opens the note at that line.
 - Specs are grouped by a frontmatter property (default `状態`) of a matching guide note, found by the file name before the first `_`.
 - Read-only: it never creates, changes, moves or deletes vault files. It writes only its own `data.json`. No network requests, no clipboard, no Node.js or Electron APIs.
-- Folder names, the marker and the property name default to the author's vault; change them in the settings.
+- First-time setup: the spec folder (「仕様書のフォルダ」) and the guide folder (「説明書のフォルダ」) are empty by default. Set them in Settings → Blocker Board (e.g. `Specs`, `Manuals`). While the spec folder is unset, nothing is read (the vault is not scanned) and the panel says so; while the guide folder is unset, specs are not grouped by state unless listed in the mapping table.
+- The marker (`未確認`), the property name (`状態`) and the "implemented" value (`実装完了`) are Japanese defaults; change them in the settings if yours differ.
 - Install with BRAT (`takosasi-dev/blocker-board`) or copy `main.js`, `manifest.json` and `styles.css` from the latest release into `.obsidian/plugins/blocker-board/`.
 - The UI is in Japanese. Tested on Obsidian 1.14.4 for Windows only; mobile was checked only with mobile emulation, not on real devices.

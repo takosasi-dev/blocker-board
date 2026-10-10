@@ -15,12 +15,11 @@ export function productOf(path: string): string {
 	return u >= 0 ? base.slice(0, u) : base;
 }
 
-/** 説明書のパス。manualMap を先に見る("" は説明書なし = null) */
+/** 説明書のパス。manualMap を先に見る("" は説明書なし = null)。manualFolder が空(未設定)なら製品名では探さない */
 export function manualPathOf(specPath: string, s: { manualMap: Record<string, string>; manualFolder: string }): string | null {
 	const mapped = s.manualMap[specPath];
 	if (mapped !== undefined) return mapped === "" ? null : mapped;
-	const name = `${productOf(specPath)}.md`;
-	return s.manualFolder === "" ? name : `${s.manualFolder}/${name}`;
+	return s.manualFolder === "" ? null : `${s.manualFolder}/${productOf(specPath)}.md`;
 }
 
 export function decideState(

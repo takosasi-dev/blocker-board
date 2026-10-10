@@ -1,4 +1,5 @@
-// 設定の型・既定値(DEFAULTS)・data.json の読み込みの補い(§9.2・D-5)。私の vault 固有の文字はこのファイルにだけ書く(INV-9)。
+// 設定の型・既定値(DEFAULTS)・data.json の読み込みの補い(§9.2・D-5)。既定の文字はこのファイルにだけ書く(INV-9)。
+// vault ごとに違うフォルダ(specFolders・manualFolder)の既定は空 = 未設定(入れた人が設定する)。
 // obsidian を import しない(テストで読む)。パスの正規化は呼び手が normalizePath を渡す。設定タブは settings-tab.ts。
 export interface Settings {
 	schemaVersion: 1;
@@ -17,11 +18,11 @@ export interface Settings {
 
 export const DEFAULTS: Settings = {
 	schemaVersion: 1,
-	specFolders: ["仕様書MDファイル"],
+	specFolders: [],                               // 未設定(空のあいだは1本も読まない)
 	excludePaths: [],                              // 仕様書でない md を除くかは §13 Q-7(私が決める)
 	mentionTexts: ["...", "…"],
 	unconfirmedMarker: "未確認",
-	manualFolder: "説明書/Claude開発ツールについて",
+	manualFolder: "",                              // 未設定(空のあいだは manualMap だけを見る)
 	manualMap: {},                                 // 仮決め: 空(候補は NOTES.md)
 	statusKey: "状態",
 	implementedStates: ["実装完了"],
